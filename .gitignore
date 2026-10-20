@@ -37,3 +37,6 @@ build/
 ### Misc ###
 Test.java
 testing_interview_guide.md
+
+frontend/node_modules/
+frontend/dist/
