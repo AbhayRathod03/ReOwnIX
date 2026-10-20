@@ -4,17 +4,19 @@ target/
 !**/src/main/**/target/
 !**/src/test/**/target/
 
-### STS ###
-.apt_generated
+### STS / Eclipse ###
+.apt_generated/
+.apt_generated_tests/
 .classpath
 .factorypath
 .project
-.settings
+.settings/
 .springBeans
 .sts4-cache
+.metadata/
 
 ### IntelliJ IDEA ###
-.idea
+.idea/
 *.iws
 *.iml
 *.ipr
@@ -31,3 +33,7 @@ build/
 
 ### VS Code ###
 .vscode/
+
+### Misc ###
+Test.java
+testing_interview_guide.md
