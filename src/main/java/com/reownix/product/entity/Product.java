@@ -9,6 +9,12 @@ import com.reownix.product.enums.ListingType;
 import com.reownix.product.enums.ProductCondition;
 import com.reownix.product.enums.ProductStatus;
 
+import com.reownix.auction.entity.Auction;
+import com.reownix.chat.entity.Conversation;
+import com.reownix.offer.entity.Offer;
+import com.reownix.review.entity.Review;
+import com.reownix.wishlist.entity.Wishlist;
+
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -21,6 +27,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
+import jakarta.persistence.OneToOne;
 import jakarta.persistence.PrePersist;
 import jakarta.persistence.PreUpdate;
 import jakarta.persistence.Table;
@@ -80,6 +87,21 @@ public class Product {
             orphanRemoval = true
     )
     private List<ProductImage> images;
+
+    @OneToOne(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true)
+    private Auction auction;
+
+    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Conversation> conversations;
+
+    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Offer> offers;
+
+    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Review> reviews;
+
+    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Wishlist> wishlists;
 
     private LocalDateTime createdAt;
 

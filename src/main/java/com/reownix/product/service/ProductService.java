@@ -25,7 +25,15 @@ public interface ProductService {
     Page<ProductResponse> getAllProducts(
             int page,
             int size,
-            String sortBy);
+            String sortBy,
+            Long categoryId,
+            String brand,
+            com.reownix.product.enums.ProductCondition condition,
+            com.reownix.product.enums.ListingType listingType,
+            java.math.BigDecimal minPrice,
+            java.math.BigDecimal maxPrice,
+            String keyword,
+            String ownerEmail);
 
     ProductDetailsResponse getProductById(Long productId);
 

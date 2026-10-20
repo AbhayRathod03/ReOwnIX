@@ -2,6 +2,7 @@ package com.reownix.auth.service.impl;
 
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -82,5 +83,14 @@ public class AuthServiceImpl implements AuthService{
                 .email(user.getEmail())
                 .role(user.getRole().getRoleName().name())
                 .build();
+    }
+	
+	@Override
+    public void logout() {
+        // Clear the Spring Security Context
+        SecurityContextHolder.clearContext();
+        
+        // TODO (Optional): If you want to prevent reused JWTs before they expire,
+        // extract the token from the request here and add it to a blacklist cache (like Redis).
     }
 }

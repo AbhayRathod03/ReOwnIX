@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import com.reownix.product.dto.response.ApiResponse;
+import com.reownix.product.dto.response.ProductDetailsResponse;
 import com.reownix.product.dto.request.CreateProductRequest;
 import com.reownix.product.dto.request.UpdateProductRequest;
 import com.reownix.product.dto.response.ProductResponse;
@@ -134,14 +135,39 @@ public class ProductController {
             @RequestParam(defaultValue = "10")
             int size,
 
-            @RequestParam(defaultValue = "createdAt")
-            String sortBy) {
+            @RequestParam(defaultValue = "createdAt,desc")
+            String sortBy,
+            
+            @RequestParam(required = false) Long categoryId,
+            @RequestParam(required = false) String brand,
+            @RequestParam(required = false) com.reownix.product.enums.ProductCondition condition,
+            @RequestParam(required = false) com.reownix.product.enums.ListingType listingType,
+            @RequestParam(required = false) java.math.BigDecimal minPrice,
+            @RequestParam(required = false) java.math.BigDecimal maxPrice,
+            @RequestParam(required = false) String keyword,
+            @RequestParam(required = false) Boolean myProducts) {
+
+        String ownerEmail = null;
+        if (Boolean.TRUE.equals(myProducts)) {
+            org.springframework.security.core.Authentication authentication = org.springframework.security.core.context.SecurityContextHolder.getContext().getAuthentication();
+            if (authentication != null && authentication.isAuthenticated() && !"anonymousUser".equals(authentication.getPrincipal())) {
+                ownerEmail = authentication.getName();
+            }
+        }
 
         Page<ProductResponse> response =
                 productService.getAllProducts(
                         page,
                         size,
-                        sortBy);
+                        sortBy,
+                        categoryId,
+                        brand,
+                        condition,
+                        listingType,
+                        minPrice,
+                        maxPrice,
+                        keyword,
+                        ownerEmail);
 
         return ResponseEntity.ok(
 
@@ -176,6 +202,22 @@ public class ProductController {
 
                         .build());
 
+    }
+    
+    @GetMapping("/{id}")
+    public ResponseEntity<ApiResponse<ProductDetailsResponse>> getProductById(
+            @PathVariable Long id) {
+
+        ProductDetailsResponse response =
+                productService.getProductById(id);
+
+        return ResponseEntity.ok(
+
+                ApiResponse.<ProductDetailsResponse>builder()
+                        .success(true)
+                        .message("Product Retrieved Successfully")
+                        .data(response)
+                        .build());
     }
     
 }

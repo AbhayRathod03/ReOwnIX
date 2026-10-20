@@ -46,7 +46,7 @@ public class User {
     private UserStatus status;
     
     @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "rolde_id")
+    @JoinColumn(name = "role_id")
     private Role role;
     
     @Column(updatable = false)
@@ -68,6 +68,14 @@ public class User {
     public void onUpdate() {
         updatedAt = LocalDateTime.now();
     }
+    
+    @Column(nullable = false)
+    @Builder.Default
+    private Boolean enabled = true;
+    
+    @Column(nullable = false)
+    @Builder.Default
+    private Boolean deleted = false;
 }
 	
 	

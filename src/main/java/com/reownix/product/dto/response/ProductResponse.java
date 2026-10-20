@@ -17,25 +17,23 @@ import lombok.Setter;
 @AllArgsConstructor
 @Builder
 public class ProductResponse {
-	
-	 private Long id;
 
-	    private String title;
+    private Long id;
 
-	    private BigDecimal price;
+    private String title;
 
-	    private String brand;
+    private BigDecimal price;
 
-	    private ProductCondition condition;
+    private String brand;
 
-	    private ListingType listingType;
+    private ProductCondition condition;
 
-	    private String category;
+    private ListingType listingType;
 
-	    private String ownerName;
+    private String category;
 
-	    private String thumbnail;
+    private OwnerDTO owner;
 
-	
-	
+    private String thumbnail;
+
 }

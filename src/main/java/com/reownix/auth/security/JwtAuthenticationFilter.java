@@ -5,6 +5,7 @@ import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.*;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.authentication.DisabledException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
@@ -44,6 +45,10 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             CustomUserDetails userDetails =
                     (CustomUserDetails) userDetailsService.loadUserByUsername(email);
 
+            if (!userDetails.isEnabled()) {
+                throw new DisabledException("User account is disabled");
+            }
+
             UsernamePasswordAuthenticationToken authentication =
                     new UsernamePasswordAuthenticationToken(
                             userDetails,
@@ -54,6 +59,16 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                     new WebAuthenticationDetailsSource().buildDetails(request));
 
             SecurityContextHolder.getContext().setAuthentication(authentication);
+        }
+
+        org.springframework.security.core.Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        if (auth != null) {
+            System.out.println("=== AUTHENTICATION DEBUG ===");
+            System.out.println("authentication: " + auth);
+            System.out.println("authentication.getName(): " + auth.getName());
+            System.out.println("authentication.isAuthenticated(): " + auth.isAuthenticated());
+            System.out.println("authentication.getAuthorities(): " + auth.getAuthorities());
+            System.out.println("============================");
         }
 
         filterChain.doFilter(request,response);
